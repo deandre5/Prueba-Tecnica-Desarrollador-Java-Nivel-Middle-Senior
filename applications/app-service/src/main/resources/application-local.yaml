@@ -1,0 +1,93 @@
+server:
+  port: ${APP_PORT:8092}
+spring:
+  application:
+    name: ${APP_NAME:Prueba-Tecnica-Desarrollador-Java-Nivel-Middle-Senior}
+  webflux:
+    base-path: ${ROUTES_BASE:/api/v1}
+  devtools:
+    add-properties: false
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VIRTUAL_HOST:/}
+    listener:
+      simple:
+        concurrency: 3
+        max-concurrency: 10
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    exchange: domainEvents
+
+logging:
+  level:
+    root: ${LOG4J_LEVEL:DEBUG}
+    co.com.bancolombia: DEBUG
+
+management:
+  health:
+    probes:
+      enabled: true
+    circuitbreakers:
+      enabled: ${CIRCUIT_BREAKER_ENABLE:false}
+    endpoint:
+      health:
+        show-details: never
+        enabled: true
+        cache:
+          time-to-live: 10s
+    endpoints:
+      web:
+        base-path: /
+        path-mapping:
+          health: health
+          liveness: liveness
+          readiness: readiness
+        exposure:
+          include: health, liveness, readiness, prometheus
+
+entry-points:
+  reactive-web:
+    statistics-route:
+      validateStats: /stats
+
+d2b:
+  cache:
+    memory:
+      expireTime: ${MEMORY_EXPIRE_TIME:30}
+      maxSize: 1000
+  aws:
+    region: ${AWS_REGION:us-east-1}
+    dynamodb:
+      endpoint: ${DYNAMODB_ENDPOINT:http://localhost:8000}
+      accessKey: ${AWS_ACCESS_KEY:your-access-key}
+      secretKey: ${AWS_SECRET_KEY:your-secret-key}
+    secrets-manager:
+      region: ${AWS_REGION:us-east-1}
+      endpoint: "http://localhost:4566"
+
+adapters:
+  aws:
+    region: ${d2b.aws.region}
+    dynamodb:
+      region: ${d2b.aws.region}
+      endpoint: ${d2b.aws.dynamodb.endpoint}
+    secrets-manager:
+      region: ${d2b.aws.secrets-manager.region}
+      endpoint: ${d2b.aws.secrets-manager.endpoint}
+
+
+dynamodb:
+  table-name: mueblesStats
+  read-capacity-units: 5
+  write-capacity-units: 5
+
+cors:
+  allowed-origins: "*"
+
+
