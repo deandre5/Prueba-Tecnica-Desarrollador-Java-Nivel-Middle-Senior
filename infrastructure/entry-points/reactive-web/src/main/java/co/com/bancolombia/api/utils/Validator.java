@@ -8,7 +8,11 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Validator {
     public static void validateRequired(Object value, BusinessErrorMessage businessErrorMessage){
-        if(value==null|| StringUtils.isEmpty(value.toString())){
+        if(value == null){
+            throw new BusinessException(businessErrorMessage);
+        }
+
+        if (value instanceof String && StringUtils.isBlank((String) value)) {
             throw new BusinessException(businessErrorMessage);
         }
     }

@@ -14,7 +14,7 @@ import static co.com.bancolombia.api.utils.Validator.validateRequired;
 public class StatisticsRequestDataDTO {
     @NotNull(message = "%DEFAULT_BAD_REQUEST%")
     @Valid
-    private StatisticsDataDTO data;
+    public StatisticsDataDTO data;
 
     @Getter
     @NoArgsConstructor
@@ -23,7 +23,7 @@ public class StatisticsRequestDataDTO {
     public static class StatisticsDataDTO{
         @NotNull(message = "%DEFAULT_BAD_REQUEST%")
         @Valid
-        private StatisticsDTO statistics;
+        public StatisticsDTO statistics;
     }
 
     public StatisticsRequestDataDTO validate(){

@@ -18,7 +18,8 @@ public enum BusinessErrorMessage {
     DEFAULT_BAD_REQUEST_STATISTICS_BUY("CCB0013", "An error occurred on request, the Purchase reason field was not sent", "400"),
     DEFAULT_BAD_REQUEST_STATISTICS_CONGRATS("CCB0014", "An error occurred on request, the reason field was not sent Congratulations", "400"),
     DEFAULT_BAD_REQUEST_STATISTICS_CHANGE("CCB0015", "An error occurred on request, no change reason field was sent", "400"),
-    DEFAULT_BAD_REQUEST_STATISTICS_HASH("CCB0016", "An error occurred on request, no hash field was sent", "400");
+    DEFAULT_BAD_REQUEST_STATISTICS_HASH("CCB0016", "An error occurred on request, no hash field was sent", "400"),
+    PRECONDITION_FAILED("CCB0001", "Invalid Request headers", "406");
     private final String code;
     private final String message;
     private final String statusCode;

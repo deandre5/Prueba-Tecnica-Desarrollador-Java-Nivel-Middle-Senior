@@ -5,14 +5,12 @@ import co.com.bancolombia.model.statistics.Statistics;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.w3c.dom.CDATASection;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient;
 
 
 
 @Repository
 public class StatisticsRepositoryAdapter extends TemplateAdapterOperations<Statistics, String,StatisticsModelEntity  > {
-
 
     public StatisticsRepositoryAdapter(DynamoDbEnhancedAsyncClient dynamoDbEnhancedAsyncClient, ObjectMapper objectMapper, @Value("${dynamodb.table-name}") String tableName){
         super(dynamoDbEnhancedAsyncClient,
