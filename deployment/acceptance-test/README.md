@@ -30,13 +30,8 @@ src
 - TestParallel -> Clase general en java que ejecuta los TESTS de karate en Paralelo y tambien genera el reporte de dichos TESTS en formato json que luego se convierte en reporte cucumber
 
 ## Ejecutando las pruebas?
-Este proyecto soporta ejecuci�n por features tageados de manera independiente,
 
+ejecutar todas las pruebas disponibles
 ```gradle
-gradlew clean test "-Dkarate.options=--tags @acceptanceTest" -i
-```
-
-o si se requiere ejecutar todas las pruebas disponibles
-```gradle
-gradlew clean test -i
+gradle test --tests TestParallel
 ```

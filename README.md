@@ -71,6 +71,10 @@ Este módulo es el más externo de la arquitectura, es el encargado de ensamblar l
 1. mediante el comando "./gradlew clean test jacocoMergedReport" podemos ejecutar todas las pruebas unitarias del MS. este ademas de ejecutarlas nos generara un reporte con el % de cobertura
 2. despues de terminar la ejecucion encontraremos el resultado de las pruebas en un informe que podremos ver en la carpeta build/reports/jacocoMergedReport/html/index.html
 
+##Como ejecutar las pruebas de aceptacion?
+1. Debemos acceder a ellas desde el IDLE para ellos nos dirigimos a la carpeta deployment/acceptance-test
+2. continuamos en el readme creado dentro de este subproyecto
+
 **Curl para la correcta ejecucion del Microservicio**
 
 curl --location 'http://localhost:8092/api/v1/stats' \
