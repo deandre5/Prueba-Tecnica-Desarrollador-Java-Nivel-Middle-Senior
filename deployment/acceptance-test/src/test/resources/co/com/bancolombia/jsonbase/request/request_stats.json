@@ -1,0 +1,14 @@
+{
+  "data": {
+    "statistics": {
+      "totalContactoClientes": #(totalContactoClientes),
+      "motivoReclamo": #(motivoReclamo),
+      "motivoGarantia": #(motivoGarantia),
+      "motivoDuda": #(motivoDuda),
+      "motivoCompra": #(motivoCompra),
+      "motivoFelicitaciones": #(motivoFelicitaciones),
+      "motivoCambio": #(motivoCambio),
+      "hash": "#(hash)"
+    }
+  }
+}

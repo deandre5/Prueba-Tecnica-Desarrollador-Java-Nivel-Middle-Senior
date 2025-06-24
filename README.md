@@ -45,3 +45,95 @@ Los entry points representan los puntos de entrada de la aplicación o el inicio 
 Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
 
 **Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+
+## Configuracion basica antes de la ejecucion del Microservicio
+1. Tener instalado docker o podman
+2. Iniciar mediante Docker o Podman el doker-compose que encontramos en deployment/docker-compose.yml
+3. Crear un exchange dentro de rabbit llamado domainEvents
+4. Crear una cola llamada event.stats.validated
+5. Crear un bind dentro de domainEvents a la cola event.stats.validated
+6. Crear una tabla en DynamoDb para almacenar los datos con el siguiente comando
+   aws --endpoint-url=http://localhost:8000 dynamodb create-table \
+   --table-name mueblesStats \
+   --attribute-definitions \
+   AttributeName=hash,AttributeType=S \
+   AttributeName=timeStamp,AttributeType=S \
+   --key-schema \
+   AttributeName=hash,KeyType=HASH \
+   AttributeName=timeStamp,KeyType=RANGE \
+   --provisioned-throughput \
+   ReadCapacityUnits=5,WriteCapacityUnits=5
+
+## Requisitos para ejecucion del MS
+1. crea una variable de entorno llamada SPRING_PROFILES_ACTIVE=local
+
+## Como ejecutar las pruebas unitarias?
+1. mediante el comando "./gradlew clean test jacocoMergedReport" podemos ejecutar todas las pruebas unitarias del MS. este ademas de ejecutarlas nos generara un reporte con el % de cobertura
+2. despues de terminar la ejecucion encontraremos el resultado de las pruebas en un informe que podremos ver en la carpeta build/reports/jacocoMergedReport/html/index.html
+
+**Curl para la correcta ejecucion del Microservicio**
+
+curl --location 'http://localhost:8092/api/v1/stats' \
+--header 'transaction-code: 0208' \
+--header 'channel: APP' \
+--header 'Content-Type: application/json' \
+--data '{
+"data": {
+"statistics": {
+"totalContactoClientes": 250,
+"motivoReclamo": 25,
+"motivoGarantia": 10,
+"motivoDuda": 100,
+"motivoCompra": 100,
+"motivoFelicitaciones": 7,
+"motivoCambio": 8,
+"hash": "5484062a4be1ce5645eb414663e14f59"
+}
+}
+}'
+
+**ejemplo de body**
+```aidl
+{
+    "data": {
+        "statistics": {
+            "totalContactoClientes": 250,
+            "motivoReclamo": 25,
+            "motivoGarantia": 10,
+            "motivoDuda": 100,
+            "motivoCompra": 100,
+            "motivoFelicitaciones": 7,
+            "motivoCambio": 8,
+            "hash": "5484062a4be1ce5645eb414663e14f59"
+        }
+    }
+}
+```
+
+**Ejemplo de una respuesta correcta**
+```aidl
+{
+    "data": {
+        "statistics": {
+            "timeStamp": "2025-06-24T04:45:04.967028400Z"
+        }
+    }
+}
+```
+
+
+**Ejemplo de una respuesta con error**
+```aidl
+{
+    "errors": [
+        {
+            "reason": "An error occurred on request, no hash field was sent",
+            "domain": "/stats",
+            "code": "CCB0016",
+            "message": "An error occurred on request, no hash field was sent"
+        }
+    ]
+}
+```
+
+
